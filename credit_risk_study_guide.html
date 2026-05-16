@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credit Risk & Corporate Debt — Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #faf9f6; --surface: #ffffff; --border: #e8e4dc; --border-strong: #c8c2b4;
+    --text: #1a1814; --muted: #6b6560; --accent: #1a3a5c; --accent-light: #e8f0f8;
+    --lo1: #1a3a5c; --lo1-bg: #e8f0f8;
+    --lo2: #3d3270; --lo2-bg: #f0eefa;
+    --lo3: #2d4a3e; --lo3-bg: #eef4f1;
+    --mc: #1a3a5c; --mc-bg: #e8f0f8;
+    --sa: #1a5c3a; --sa-bg: #e8f8ee;
+    --calc: #5c3a1a; --calc-bg: #f8eee8;
+    --correct: #1a5c3a; --correct-bg: #d6f5e3;
+    --wrong: #5c1a1a; --wrong-bg: #f5d6d6;
+    --radius: 10px;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+  html { font-size: 15px; background: var(--bg); }
+  body { font-family: var(--font-body); color: var(--text); line-height: 1.65; padding: 2rem 1.5rem 4rem; max-width: 780px; margin: 0 auto; }
+  header { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+  header .kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  header h1 { font-family: var(--font-display); font-size: 2rem; font-weight: 400; line-height: 1.2; color: var(--text); margin-bottom: 0.4rem; }
+  header p { font-size: 14px; color: var(--muted); }
+  .tabs { display: flex; gap: 0; margin-bottom: 2rem; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+  .tab { flex: 1; padding: 10px 16px; border: none; background: transparent; font-family: var(--font-body); font-size: 13.5px; font-weight: 500; color: var(--muted); cursor: pointer; transition: all 0.15s; border-right: 1px solid var(--border); }
+  .tab:last-child { border-right: none; }
+  .tab:hover { background: var(--bg); color: var(--text); }
+  .tab.active { background: var(--accent); color: #fff; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .lo-badge { display: inline-block; font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; margin-right: 8px; vertical-align: middle; }
+  .lo1 { background: var(--lo1-bg); color: var(--lo1); }
+  .lo2 { background: var(--lo2-bg); color: var(--lo2); }
+  .lo3 { background: var(--lo3-bg); color: var(--lo3); }
+  .qa-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; transition: border-color 0.15s; }
+  .qa-card:hover { border-color: var(--border-strong); }
+  .qa-question { padding: 14px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; user-select: none; }
+  .qa-question-text { font-size: 14.5px; font-weight: 500; color: var(--text); line-height: 1.5; flex: 1; }
+  .qa-icon { width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--border-strong); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--muted); transition: all 0.2s; margin-top: 1px; }
+  .qa-card.open .qa-icon { background: var(--accent); border-color: var(--accent); color: #fff; transform: rotate(45deg); }
+  .qa-answer { display: none; padding: 14px 16px 16px; border-top: 1px solid var(--border); background: var(--bg); font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .qa-card.open .qa-answer { display: block; }
+  .qa-answer ul { padding-left: 1.2rem; margin-top: 8px; }
+  .qa-answer li { margin-bottom: 5px; }
+  .qa-answer strong { color: var(--text); font-weight: 600; }
+  .qa-answer em { color: #1a3a5c; font-style: italic; }
+  .formula-box { background: var(--surface); border: 1px solid var(--border); border-radius: 7px; padding: 12px 16px; margin: 10px 0; font-family: var(--font-mono); font-size: 13px; color: var(--text); line-height: 1.8; }
+  .section-label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+  .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; font-size: 13px; color: var(--muted); }
+  .progress-bar { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease; width: 0%; }
+  .exam-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
+  .exam-type { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; display: inline-block; padding: 2px 8px; border-radius: 4px; margin-bottom: 10px; }
+  .mc { background: var(--mc-bg); color: var(--mc); }
+  .sa { background: var(--sa-bg); color: var(--sa); }
+  .calc { background: var(--calc-bg); color: var(--calc); }
+  .exam-q { font-size: 14.5px; font-weight: 500; color: var(--text); line-height: 1.55; margin-bottom: 12px; }
+  .exam-options { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 4px; }
+  .exam-options li { padding: 9px 13px; border-radius: 7px; font-size: 13.5px; cursor: pointer; border: 1px solid var(--border); color: var(--muted); transition: all 0.15s; line-height: 1.45; }
+  .exam-options li:hover { border-color: var(--border-strong); color: var(--text); background: var(--bg); }
+  .exam-options li.correct { background: var(--correct-bg); color: var(--correct); border-color: #7dcea0; pointer-events: none; }
+  .exam-options li.wrong { background: var(--wrong-bg); color: var(--wrong); border-color: #e5a0a0; pointer-events: none; }
+  .exam-options li.locked { pointer-events: none; }
+  .reveal-btn { margin-top: 10px; padding: 7px 14px; border: 1px solid var(--border-strong); border-radius: 7px; background: transparent; font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+  .reveal-btn:hover { background: var(--bg); color: var(--text); }
+  .answer-box { display: none; margin-top: 12px; padding: 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 7px; font-size: 13.5px; color: var(--muted); line-height: 1.7; }
+  .answer-box strong { color: var(--text); }
+  .answer-box em { color: #1a3a5c; }
+  .answer-box .formula-box { font-size: 12.5px; }
+  .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+  @media (max-width: 480px) { body { padding: 1rem 1rem 3rem; } header h1 { font-size: 1.6rem; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">ETH Zürich · MScMTE · 01.03.2026 · Lecture 3</div>
+  <h1>Credit Risk &amp; the Value<br><em>of Corporate Debt</em></h1>
+  <p>Dr. Silke Klara Waterstraat · Interactive Study Guide</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('qa', this)">Q&amp;A Revision</button>
+  <button class="tab" onclick="switchTab('exam', this)">Exam Practice</button>
+</div>
+
+<!-- Q&A SECTION -->
+<div id="qa" class="section active">
+  <div class="progress-row">
+    <span id="qa-progress-text">0 / 12 revealed</span>
+    <div class="progress-bar"><div class="progress-fill" id="qa-bar"></div></div>
+  </div>
+  <div class="section-label">Learning objectives 1–3 — click any card to reveal the answer</div>
+
+  <!-- LO1 -->
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo1">LO 1</span>What is the bond pricing formula and what does each variable represent?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      The price of a bond equals the present value of all future cash flows (coupons + face value) discounted at the required rate of return (yield to maturity, <em>y</em>):
+      <div class="formula-box">PV = cpn/(1+y)¹ + cpn/(1+y)² + … + (cpn + par)/(1+y)ⁿ</div>
+      <ul>
+        <li><strong>cpn</strong> = coupon payment each period</li>
+        <li><strong>par</strong> = face/par value repaid at maturity</li>
+        <li><strong>y</strong> = yield to maturity (required return / discount rate)</li>
+        <li><strong>n</strong> = number of periods to maturity</li>
+      </ul>
+      When the interest rate equals the coupon rate, the bond sells at par (face value).
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo1">LO 1</span>How do bond prices and interest rates relate? Why are long-term bonds more sensitive?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      Bond prices and interest rates move in <strong>opposite directions</strong> — when rates rise, bond prices fall, and vice versa.<br><br>
+      Long-term bonds are more sensitive because more of their cash flows occur far in the future. A given change in the discount rate has a much larger proportional effect on distant cash flows (compounded over many periods) than on near-term ones. This is visible in the price-yield curve: the 30-year bond curve is much steeper than the 4-year bond curve.
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo1">LO 1</span>What is the difference between the <em>promised yield</em> and the <em>expected yield</em> on a corporate bond?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      <strong>Promised yield</strong>: the return you would earn if the company makes all payments in full and on time — calculated from the bond's price and face value.<br><br>
+      <strong>Expected yield</strong>: the probability-weighted return, accounting for the chance of default. It is always ≤ promised yield.<br><br>
+      <strong>Backwoods example:</strong> The bond sells for $895, giving a promised yield of 17.3%, but the expected yield is only 5% (= $940/$895 − 1) — the same as a risk-free bond — because the 20% default probability is assumed to be fully diversifiable. If market risk is present (positive beta), investors also demand a risk premium, pushing the price further down and the promised yield even higher.
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo1">LO 1</span>What is a yield spread, and what does it reflect? Give typical figures for Aaa and Baa bonds.</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      The <strong>yield spread</strong> (or credit spread) is the difference between a corporate bond's promised yield and the yield on a Treasury bond of equivalent maturity. It compensates investors for credit risk (default probability and loss given default) and illiquidity.<br><br>
+      <ul>
+        <li><strong>Aaa (Moody's)</strong>: spread has averaged ~1% above 10-Year Treasuries — highest quality, very few blue-chip issuers</li>
+        <li><strong>Baa (Moody's)</strong>: spread has averaged ~2% above Treasuries — three notches lower, still investment grade</li>
+      </ul>
+      Spreads spike sharply during financial crises (e.g., 2008–09) and compress during boom periods.
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo1">LO 1</span>What is a Credit Default Swap (CDS) and how does it work?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      A <strong>CDS</strong> is a financial contract that functions like insurance on corporate debt:
+      <ul>
+        <li>The <strong>buyer</strong> pays a periodic premium (the "spread", in basis points) to the seller</li>
+        <li>If the reference company <strong>defaults</strong>, the seller pays the buyer the difference between face value and market value of the debt</li>
+        <li>The CDS spread is a market-based signal of perceived default risk — when Credit Suisse's CDS spread hit ~1,000 bps in early 2023, markets were pricing in very high default probability</li>
+      </ul>
+      CDS became notorious in the 2008 crisis: AIG had sold massive amounts of CDS protection, and when defaults spiked it could not pay, threatening systemic collapse.
+    </div>
+  </div>
+
+  <!-- LO2 -->
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo2">LO 2</span>Why can equity be thought of as a call option on the firm's assets?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      Shareholders have <strong>limited liability</strong>. If firm value exceeds the debt (face value = exercise price), shareholders repay the debt and keep the remainder — they exercise the call. If firm value falls below the debt, shareholders walk away (default) and hand the assets to bondholders — the call expires worthless.<br><br>
+      <strong>Circular File example:</strong> Assets = $30, debt face value = $50. If due now, shareholders get nothing. But with one year remaining, there is a chance assets recover above $50, so equity still has value ($3) as an out-of-the-money call option.
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo2">LO 2</span>How is the value of a corporate bond related to the default put option?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      A corporate bond can be decomposed as:
+      <div class="formula-box">Value of Corporate Bond = Value of Default-Free Bond − Value of Default Put</div>
+      The <strong>default put</strong> is the option shareholders hold to "put" the firm's assets to bondholders in exchange for cancelling the debt. Its value reflects the risk bondholders bear.<br><br>
+      <strong>Circular File:</strong> Default-free bond = $50/1.10 = $45.5; Default put (Black-Scholes) = $18.6 → Bond value ≈ $26.9 ≈ $27 (consistent with balance sheet).
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo2">LO 2</span>How does each of six factors affect the value of the default put?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      <ul>
+        <li><strong>↑ Asset value</strong> → default put <em>declines</em> (less chance of defaulting)</li>
+        <li><strong>↑ Asset volatility</strong> → default put <em>rises</em> (more uncertainty, option value rises)</li>
+        <li><strong>↑ Outstanding debt</strong> → default put <em>rises</em> (higher exercise price, harder to repay)</li>
+        <li><strong>↑ Debt maturity</strong> → default put <em>rises</em> (longer time for things to go wrong)</li>
+        <li><strong>↑ Risk-free rate</strong> → default put <em>declines</em> (higher discount rate reduces PV of exercise)</li>
+        <li><strong>↑ Dividend payments</strong> → default put <em>rises</em> (cash leaves firm, reducing asset value for bondholders)</li>
+      </ul>
+      Note: The default put framework explains investment-grade spreads well, but <em>underestimates</em> junk bond spreads — junk bond investors also demand extra compensation for <strong>illiquidity</strong>.
+    </div>
+  </div>
+
+  <!-- LO3 -->
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo3">LO 3</span>What is the bond rating scale? Where is the investment-grade / junk bond boundary?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      <strong>Investment-grade</strong> (Baa/BBB or above):
+      <ul>
+        <li>Aaa / AAA — highest quality, blue-chip only</li>
+        <li>Aa / AA</li>
+        <li>A / A</li>
+        <li>Baa / BBB — lowest investment grade</li>
+      </ul>
+      <strong>Junk bonds</strong> (below Baa/BBB):
+      <ul>
+        <li>Ba / BB · B / B · Caa / CCC · Ca / CC · C / C</li>
+      </ul>
+      Moody's and S&amp;P/Fitch use different notation but equivalent scales. Investors (pension funds, insurers) are often restricted by mandate to investment-grade only, so a downgrade through Baa/BBB can trigger forced selling.
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo3">LO 3</span>What financial ratios are associated with higher vs lower bond ratings?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      Higher-rated bonds (e.g., Aa) tend to have:
+      <ul>
+        <li><strong>Higher operating margin</strong> — Aa: 15.2% vs Caa-C: −0.4%</li>
+        <li><strong>Higher pre-tax return on assets</strong> — Aa: 10.7% vs Caa-C: 0.8%</li>
+        <li><strong>Lower debt ratio</strong> — Aa: 41.5% vs Caa-C: 94.4%</li>
+        <li><strong>Higher interest coverage</strong> — Aa: 20.8× vs Caa-C: 0.2×</li>
+      </ul>
+      The key insight: on average, <strong>bankruptcy is preceded</strong> by declining profit margins, falling return on capital, rising financial leverage, and deteriorating liquidity — these signals can be detected years in advance.
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo3">LO 3</span>What is Altman's Z-Score and what does it predict?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      Altman's Z-Score combines multiple financial ratios into a single bankruptcy-prediction score:
+      <div class="formula-box">Z = 1.2x₁ + 1.4x₂ + 3.3x₃ + 0.6x₄ + 1.0x₅</div>
+      Where:
+      <ul>
+        <li><strong>x₁</strong> = Working capital / Total assets</li>
+        <li><strong>x₂</strong> = Retained earnings / Total assets</li>
+        <li><strong>x₃</strong> = EBIT / Total assets</li>
+        <li><strong>x₄</strong> = Market value of equity / Book value of debt</li>
+        <li><strong>x₅</strong> = Sales / Total assets</li>
+      </ul>
+      A score <strong>below 1.8</strong> indicates impending bankruptcy. The model avoids the limitation of examining individual ratios in isolation by combining them into a composite discriminant score.
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo3">LO 3</span>For each of seven variables, does a high value imply a high or low probability of bankruptcy?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      <ul>
+        <li><strong>Debt ratio</strong> — High → <em>Higher</em> probability of default</li>
+        <li><strong>Interest coverage</strong> — High → <em>Lower</em> probability of default</li>
+        <li><strong>Cash-to-sales / assets</strong> — High → <em>Lower</em> probability of default</li>
+        <li><strong>Return on assets</strong> — High → <em>Lower</em> probability of default</li>
+        <li><strong>Market-to-book ratio</strong> — High → <em>Lower</em> probability of default</li>
+        <li><strong>Recent stock returns</strong> — High → <em>Lower</em> probability of default</li>
+        <li><strong>Stock return volatility</strong> — High → <em>Higher</em> probability of default</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- EXAM SECTION -->
+<div id="exam" class="section">
+  <div class="section-label">Exam-style practice — three question formats</div>
+
+  <div class="exam-card">
+    <span class="exam-type mc">Multiple choice</span>
+    <div class="exam-q">Backwoods Chemical has a 1-year bond with face value $1,000 and a 5% coupon. There is a 20% chance of default, paying only $500. The risk-free rate is 5% and default is fully diversifiable. What does the bond sell for?</div>
+    <ul class="exam-options" id="mc1">
+      <li onclick="mcAnswer(this,false,'mc1')">A) $1,000 — it sells at par since the coupon equals the risk-free rate</li>
+      <li onclick="mcAnswer(this,true,'mc1')">B) $895 — expected payoff $940 discounted at 5%</li>
+      <li onclick="mcAnswer(this,false,'mc1')">C) $870 — expected payoff $940 discounted at 8% with a 3% risk premium</li>
+      <li onclick="mcAnswer(this,false,'mc1')">D) $500 — the value of recovery in default</li>
+    </ul>
+  </div>
+
+  <div class="exam-card">
+    <span class="exam-type mc">Multiple choice</span>
+    <div class="exam-q">Which of the following would DECREASE the value of the default put on a corporate bond?</div>
+    <ul class="exam-options" id="mc2">
+      <li onclick="mcAnswer(this,false,'mc2')">A) An increase in the volatility of the firm's assets</li>
+      <li onclick="mcAnswer(this,false,'mc2')">B) An increase in the amount of outstanding debt</li>
+      <li onclick="mcAnswer(this,true,'mc2')">C) An increase in the market value of the firm's assets</li>
+      <li onclick="mcAnswer(this,false,'mc2')">D) An extension of the debt maturity</li>
+    </ul>
+  </div>
+
+  <div class="exam-card">
+    <span class="exam-type mc">Multiple choice</span>
+    <div class="exam-q">In February 20XX, Aaa bonds yield 2.36%, Baa bonds yield 3.43%, and equivalent Treasuries yield 0.676%. What is the credit spread on Baa bonds?</div>
+    <ul class="exam-options" id="mc3">
+      <li onclick="mcAnswer(this,false,'mc3')">A) 1.684%</li>
+      <li onclick="mcAnswer(this,false,'mc3')">B) 3.43%</li>
+      <li onclick="mcAnswer(this,true,'mc3')">C) 2.754%</li>
+      <li onclick="mcAnswer(this,false,'mc3')">D) 3.106%</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="exam-card">
+    <span class="exam-type sa">Short answer · 4 marks</span>
+    <div class="exam-q">Explain why the promised yield on a corporate bond exceeds its expected yield. Under what additional condition would the expected yield also exceed the risk-free rate?</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Show model answer</button>
+    <div class="answer-box">The <strong>promised yield</strong> is calculated assuming all payments are made in full. Since there is a positive probability of default, the <em>expected</em> payoff is lower than the promised payoff. Discounting the lower expected payoff at the same rate produces a lower expected yield. Hence promised yield > expected yield whenever default risk is non-zero.<br><br>The expected yield exceeds the risk-free rate when the bond carries <strong>market risk</strong> (a positive beta). If default risk is purely idiosyncratic (fully diversifiable), expected yield = risk-free rate. But if the firm is more likely to default in bad economic times (systematic risk), investors demand a <strong>risk premium</strong> above the risk-free rate, so: expected yield = risk-free rate + risk premium.</div>
+  </div>
+
+  <div class="exam-card">
+    <span class="exam-type sa">Short answer · 4 marks</span>
+    <div class="exam-q">Other things equal, would you expect the price difference between a Treasury bond and a corporate bond to increase or decrease with (a) the company's business risk, (b) financial leverage, and (c) time to maturity? Justify each answer.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Show model answer</button>
+    <div class="answer-box"><strong>(a) Business risk — Increase.</strong> Higher business risk means greater asset volatility, which raises the value of the default put. A more valuable default put means a lower corporate bond price relative to the default-free Treasury, widening the price gap.<br><br><strong>(b) Financial leverage — Increase.</strong> More debt raises the exercise price of the default option. This makes default more likely and increases the default put value, again lowering the corporate bond price relative to the Treasury.<br><br><strong>(c) Time to maturity — Increase.</strong> A longer maturity gives more time for asset values to deteriorate and for default to occur. The default put value rises with maturity (like any option), widening the price differential between the corporate bond and equivalent Treasury.</div>
+  </div>
+
+  <div class="exam-card">
+    <span class="exam-type calc">Calculation · 5 marks</span>
+    <div class="exam-q">Circular File has asset value $30. Its debt has face value $50 due in one year. The risk-free rate is 10%. Using Black-Scholes, the default put is valued at $18.6. (a) Calculate the value of Circular's bond. (b) What is Circular's equity value? (c) Why does equity have positive value even though assets ($30) are less than debt ($50)?</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Show model answer</button>
+    <div class="answer-box"><strong>(a) Bond value:</strong>
+      <div class="formula-box">Bond = Default-free bond − Default put
+= $50/1.10 − $18.6
+= $45.45 − $18.6 ≈ $26.9 ≈ $27</div>
+      <strong>(b) Equity value:</strong>
+      <div class="formula-box">Equity = Firm value − Bond value = $30 − $27 = $3</div>
+      <strong>(c)</strong> Even though the firm cannot repay its debt today ($30 &lt; $50), the debt is not due immediately — there is one year remaining. During that year, there is a chance that asset values recover above $50, in which case shareholders would repay the debt and retain the surplus. Equity functions like a <em>call option</em> on the firm's assets with exercise price $50 — and all options have positive value while time remains, even when out of the money.</div>
+  </div>
+
+  <div class="exam-card">
+    <span class="exam-type calc">Calculation · 3 marks</span>
+    <div class="exam-q">A firm has the following data: working capital/assets = 0.10, retained earnings/assets = 0.20, EBIT/assets = 0.05, market equity/book debt = 0.40, sales/assets = 0.80. Calculate Altman's Z-Score and assess the firm's default risk.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Show model answer</button>
+    <div class="answer-box"><div class="formula-box">Z = 1.2(0.10) + 1.4(0.20) + 3.3(0.05) + 0.6(0.40) + 1.0(0.80)
+  = 0.12 + 0.28 + 0.165 + 0.24 + 0.80
+  = 1.605</div>
+      Since Z = 1.605 &lt; 1.8, Altman's model signals <strong>impending bankruptcy risk</strong>. The firm falls in the distress zone. The particularly low EBIT/assets (0.05) and market equity/book debt (0.40) suggest weak profitability and high leverage are the main drivers of the elevated default probability.</div>
+  </div>
+</div>
+
+<script>
+  let qaRevealed = 0;
+  const totalQA = 12;
+
+  function switchTab(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function toggleQA(card) {
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    qaRevealed = wasOpen ? Math.max(qaRevealed - 1, 0) : Math.min(qaRevealed + 1, totalQA);
+    document.getElementById('qa-progress-text').textContent = qaRevealed + ' / ' + totalQA + ' revealed';
+    document.getElementById('qa-bar').style.width = (qaRevealed / totalQA * 100) + '%';
+  }
+
+  const correctMap = { mc1: 'B)', mc2: 'C)', mc3: 'C)' };
+
+  function mcAnswer(li, correct, groupId) {
+    const group = document.getElementById(groupId);
+    group.querySelectorAll('li').forEach(o => { o.classList.add('locked'); o.onclick = null; });
+    li.classList.add(correct ? 'correct' : 'wrong');
+    if (!correct) {
+      const prefix = correctMap[groupId];
+      group.querySelectorAll('li').forEach(o => { if (o.textContent.trim().startsWith(prefix)) o.classList.add('correct'); });
+    }
+  }
+
+  function revealAnswer(btn) {
+    const box = btn.nextElementSibling;
+    const isOpen = box.style.display === 'block';
+    box.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? 'Show model answer' : 'Hide answer';
+  }
+</script>
+</body>
+</html>
