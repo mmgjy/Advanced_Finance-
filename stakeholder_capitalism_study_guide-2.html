@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stakeholder Capitalism — Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #faf9f6;
+    --surface: #ffffff;
+    --border: #e8e4dc;
+    --border-strong: #c8c2b4;
+    --text: #1a1814;
+    --muted: #6b6560;
+    --accent: #2d4a3e;
+    --accent-light: #eef4f1;
+    --accent-mid: #4a7a66;
+    --lo1: #5c3d2e; --lo1-bg: #fdf3ed;
+    --lo2: #2d4a3e; --lo2-bg: #eef4f1;
+    --lo3: #3d3270; --lo3-bg: #f0eefa;
+    --lo4: #7a3d2d; --lo4-bg: #fdf0ed;
+    --lo5: #2d4a5c; --lo5-bg: #edf4f8;
+    --mc: #1a3a5c; --mc-bg: #e8f0f8;
+    --sa: #1a5c3a; --sa-bg: #e8f8ee;
+    --cq: #5c3a1a; --cq-bg: #f8eeE8;
+    --correct: #1a5c3a; --correct-bg: #d6f5e3;
+    --wrong: #5c1a1a; --wrong-bg: #f5d6d6;
+    --radius: 10px;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  html { font-size: 15px; background: var(--bg); }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--text);
+    line-height: 1.65;
+    padding: 2rem 1.5rem 4rem;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header .kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  header h1 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  header p {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    border-right: 1px solid var(--border);
+  }
+
+  .tab:last-child { border-right: none; }
+  .tab:hover { background: var(--bg); color: var(--text); }
+
+  .tab.active {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .lo-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  .lo1 { background: var(--lo1-bg); color: var(--lo1); }
+  .lo2 { background: var(--lo2-bg); color: var(--lo2); }
+  .lo3 { background: var(--lo3-bg); color: var(--lo3); }
+  .lo4 { background: var(--lo4-bg); color: var(--lo4); }
+  .lo5 { background: var(--lo5-bg); color: var(--lo5); }
+
+  .qa-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+
+  .qa-card:hover { border-color: var(--border-strong); }
+
+  .qa-question {
+    padding: 14px 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    user-select: none;
+  }
+
+  .qa-question-text {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .qa-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--muted);
+    transition: all 0.2s;
+    margin-top: 1px;
+  }
+
+  .qa-card.open .qa-icon {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    transform: rotate(45deg);
+  }
+
+  .qa-answer {
+    display: none;
+    padding: 14px 16px 16px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .qa-card.open .qa-answer { display: block; }
+
+  .qa-answer ul {
+    padding-left: 1.2rem;
+    margin-top: 8px;
+  }
+
+  .qa-answer li { margin-bottom: 5px; }
+
+  .qa-answer strong { color: var(--text); font-weight: 600; }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .exam-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .exam-type {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+
+  .mc { background: var(--mc-bg); color: var(--mc); }
+  .sa { background: var(--sa-bg); color: var(--sa); }
+  .cq { background: var(--cq-bg); color: var(--cq); }
+
+  .exam-q {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+
+  .exam-options {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+
+  .exam-options li {
+    padding: 9px 13px;
+    border-radius: 7px;
+    font-size: 13.5px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    transition: all 0.15s;
+    line-height: 1.45;
+  }
+
+  .exam-options li:hover { border-color: var(--border-strong); color: var(--text); background: var(--bg); }
+
+  .exam-options li.correct {
+    background: var(--correct-bg);
+    color: var(--correct);
+    border-color: #7dcea0;
+    pointer-events: none;
+  }
+
+  .exam-options li.wrong {
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border-color: #e5a0a0;
+    pointer-events: none;
+  }
+
+  .exam-options li.locked { pointer-events: none; }
+
+  .reveal-btn {
+    margin-top: 10px;
+    padding: 7px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: 7px;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .reveal-btn:hover { background: var(--bg); color: var(--text); }
+
+  .answer-box {
+    display: none;
+    margin-top: 12px;
+    padding: 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .answer-box strong { color: var(--text); }
+  .answer-box em { color: var(--accent-mid); font-style: italic; }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1.5rem 0;
+  }
+
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.25rem;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 1rem 1rem 3rem; }
+    header h1 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">ETH Zürich · MScMTE · 24.02.2026</div>
+  <h1>Stakeholder Capitalism<br><em>& Responsible Business</em></h1>
+  <p>Dr. Silke Klara Waterstraat · Interactive Study Guide</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('qa', this)">Q&amp;A Revision</button>
+  <button class="tab" onclick="switchTab('exam', this)">Exam Practice</button>
+</div>
+
+<!-- Q&A SECTION -->
+<div id="qa" class="section active">
+  <div class="progress-row">
+    <span id="qa-progress-text">0 / 10 revealed</span>
+    <div class="progress-bar"><div class="progress-fill" id="qa-bar"></div></div>
+  </div>
+
+  <div class="section-label">Learning objectives 1–5 — click any card to reveal the answer</div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo1">LO 1</span>Who are a company's stakeholders? Give at least four examples.</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      Stakeholders are all parties who are affected by or have an interest in a company's decisions. Key groups include:
+      <ul>
+        <li><strong>Employees</strong> — competitive wages, layoff conditions, diversity &amp; inclusion</li>
+        <li><strong>Customers</strong> — transparency, no exploitation of limited competition, avoiding addictive products</li>
+        <li><strong>Suppliers</strong> — fair treatment throughout the supply chain</li>
+        <li><strong>Local &amp; regional communities</strong> — investment in the areas where the firm operates</li>
+        <li><strong>The environment</strong> — minimising ecological harm</li>
+        <li><strong>Government</strong> — contributing to national finances through taxation</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo2">LO 2</span>What are Friedman's three arguments for shareholder capitalism?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      <ul>
+        <li><strong>Stakeholder investment is required anyway:</strong> Maximising shareholder value already requires investing in customers and employees, since those relationships generate future cash flows.</li>
+        <li><strong>Government fills the gap:</strong> Democratic governments use laws and taxes to address externalities — corporations need not duplicate that role.</li>
+        <li><strong>Freedom for investors:</strong> Maximising profit gives shareholders maximum personal flexibility to support whichever social objectives they care about.</li>
+      </ul>
+      Note: Friedman did <em>not</em> advocate exploiting stakeholders — he assumed well-functioning markets and governments would prevent abuse.
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo2">LO 2</span>What is Enlightened Shareholder Value (ESV), and what are its two practical advantages?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      ESV holds that investing in stakeholders is <em>how</em> you maximise shareholder value — stakeholders are a means to an end, not an end in themselves. A company invests only when doing so is a <strong>positive-NPV project</strong>.
+      <br><br>
+      <strong>Two practical advantages:</strong>
+      <ul>
+        <li>Clear investment decision criterion: positive NPV</li>
+        <li>Clear performance benchmark: stock price</li>
+      </ul>
+      <strong>Example:</strong> ESV favours (b) over (a) — paying employees $10m extra raises shareholder value from $100m to $105m — but not (c) over (a) — paying employees $25m extra reduces shareholder value to $95m.
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo3">LO 3</span>What are the three violations of Friedman's assumptions that justify stakeholder capitalism?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      <ul>
+        <li><strong>Governments may not function well:</strong> Corporate lobbying, infrequent elections, and the difficulty of regulating qualitative issues weaken the assumption that government reliably enforces responsible behaviour.</li>
+        <li><strong>Companies do have comparative advantages in serving society:</strong> They directly control their operations (e.g., emissions, working conditions) and possess specialist expertise that lets them create social value more efficiently than government.</li>
+        <li><strong>NPV calculation is often impossible:</strong> It can be impractical to calculate the NPV impact of stakeholder investments under uncertainty. Treating stakeholders as intrinsically valuable sidesteps this and provides a useful decision heuristic.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo3">LO 3</span>What is the key challenge or criticism of stakeholder capitalism?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      Without a clear rule to replace NPV, accountability becomes diffuse — "accountability to everyone means accountability to no one." Two forms of arbitrariness arise:
+      <ul>
+        <li><strong>Weighting:</strong> No agreed formula for how much to weight shareholders vs stakeholders.</li>
+        <li><strong>Comparability:</strong> Shareholder value is in USD; stakeholder value (wellbeing, environmental quality) is not directly comparable.</li>
+      </ul>
+      There are also <strong>contradictory stakeholder interests</strong> — e.g., shutting a coal plant benefits the environment but harms workers and local communities.
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo4">LO 4</span>How does Responsible Business differ from pure shareholder capitalism and from CSR?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      Responsible Business is a hybrid: it creates value for shareholders <em>by</em> creating value for society, while retaining an explicit duty to shareholders.
+      <ul>
+        <li><strong>vs Shareholder capitalism:</strong> Stakeholders are treated as ends in themselves, not just instruments of profit.</li>
+        <li><strong>vs CSR:</strong> CSR covers non-core, peripheral activities (e.g., charitable donations) — it <em>splits the pie</em>. Responsible Business embeds social value creation into the firm's core strategy — it <em>grows the pie</em>.</li>
+        <li>In short: value creation vs value extraction.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo4">LO 4</span>What are the three guiding principles of Responsible Business?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      <ul>
+        <li><strong>Multiplication:</strong> Does the investment generate a social benefit greater than its private cost? The social return must exceed the private cost.</li>
+        <li><strong>Comparative Advantage:</strong> Can the company deliver more value through this activity than others (e.g., government or NGOs)? Ensures social benefits also exceed social costs.</li>
+        <li><strong>Materiality:</strong> Are the affected stakeholders material to the business? Makes it more likely that social value created will ultimately convert into shareholder value.</li>
+      </ul>
+      All three together create a virtuous cycle between shareholders and stakeholders.
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo5">LO 5</span>What are the three main problems with ESG-linked executive pay?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      In 2023, 76% of S&amp;P 500 firms linked executive pay to at least one ESG target. The risks:
+      <ul>
+        <li><strong>Hitting the target, missing the point:</strong> CEOs focus narrowly on the contracted metrics and neglect broader ESG behaviour.</li>
+        <li><strong>Extrinsic not intrinsic motivation:</strong> Improvements are pursued for the bonus, not because the CEO genuinely cares.</li>
+        <li><strong>More pay, not more ESG:</strong> Information asymmetry allows CEOs to negotiate easy targets — producing higher pay without meaningful progress.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo5">LO 5</span>Why are ESG ratings unreliable? What are the three sources of inconsistency?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      Correlation between ratings from different agencies is only <strong>0.38–0.71</strong>, vs 0.9 for credit ratings (Berg et al., 2022). Sources of divergence:
+      <ul>
+        <li><strong>Scope (38%):</strong> Different agencies assess different attributes entirely.</li>
+        <li><strong>Measurement (56%):</strong> The same dimension is quantified differently — e.g., labour practices measured by turnover vs labour violations.</li>
+        <li><strong>Weighting (6%):</strong> Different providers assign different weights to the components.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa-card" onclick="toggleQA(this)">
+    <div class="qa-question">
+      <div class="qa-question-text"><span class="lo-badge lo5">LO 5</span>What formal structures can companies adopt to commit to Responsible Business?</div>
+      <div class="qa-icon">+</div>
+    </div>
+    <div class="qa-answer">
+      <ul>
+        <li><strong>Benefit Corporations:</strong> A legal structure requiring directors to deliver on stated societal benefits beyond profit maximisation.</li>
+        <li><strong>B Corps:</strong> No legal status, but certified by B Lab (a global nonprofit) based on verified social and environmental performance.</li>
+        <li><strong>Purpose Statements:</strong> Companies can publish a public purpose statement without formal legal or certification requirements.</li>
+      </ul>
+      Even without these, companies can voluntarily report stakeholder value using frameworks such as IFRS Sustainability Standards — though comparability across firms remains a significant ongoing challenge.
+    </div>
+  </div>
+</div>
+
+<!-- EXAM SECTION -->
+<div id="exam" class="section">
+  <div class="section-label">Exam-style practice — three question formats</div>
+
+  <div class="exam-card">
+    <span class="exam-type mc">Multiple choice</span>
+    <div class="exam-q">Under Enlightened Shareholder Value (ESV), investing $10m in employee training raises employee welfare by $10m and shareholder value from $100m to $105m. Does ESV support this investment?</div>
+    <ul class="exam-options" id="mc1">
+      <li onclick="mcAnswer(this, false, 'mc1')">A) Yes, because it benefits employees</li>
+      <li onclick="mcAnswer(this, true, 'mc1')">B) Yes, because shareholder value rises — it is a positive-NPV investment</li>
+      <li onclick="mcAnswer(this, false, 'mc1')">C) No, because it splits the pie rather than growing it</li>
+      <li onclick="mcAnswer(this, false, 'mc1')">D) No, because ESV ignores stakeholder welfare entirely</li>
+    </ul>
+  </div>
+
+  <div class="exam-card">
+    <span class="exam-type mc">Multiple choice</span>
+    <div class="exam-q">Which is the largest source of divergence between ESG ratings from different agencies?</div>
+    <ul class="exam-options" id="mc2">
+      <li onclick="mcAnswer(this, false, 'mc2')">A) Scope — different agencies assess different attributes (38%)</li>
+      <li onclick="mcAnswer(this, true, 'mc2')">B) Measurement — the same dimension is quantified in different ways (56%)</li>
+      <li onclick="mcAnswer(this, false, 'mc2')">C) Weighting — different weights placed on components (6%)</li>
+      <li onclick="mcAnswer(this, false, 'mc2')">D) Data availability — many companies do not disclose ESG data</li>
+    </ul>
+  </div>
+
+  <div class="exam-card">
+    <span class="exam-type mc">Multiple choice</span>
+    <div class="exam-q">Friedman argued that a company pursuing social causes beyond profit is problematic primarily because:</div>
+    <ul class="exam-options" id="mc3">
+      <li onclick="mcAnswer(this, false, 'mc3')">A) It reduces employee welfare</li>
+      <li onclick="mcAnswer(this, false, 'mc3')">B) Stakeholders do not benefit from corporate decisions</li>
+      <li onclick="mcAnswer(this, true, 'mc3')">C) It usurps the role of democratically elected government</li>
+      <li onclick="mcAnswer(this, false, 'mc3')">D) ESG investments always have negative NPV</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="exam-card">
+    <span class="exam-type sa">Short answer · 4 marks</span>
+    <div class="exam-q">Explain the difference between Responsible Business and Corporate Social Responsibility (CSR). In your answer, refer to the concept of "growing vs splitting the pie."</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Show model answer</button>
+    <div class="answer-box">CSR involves non-core, peripheral activities such as charitable donations — it takes existing profits and redistributes them, thereby <em>splitting the pie</em> between shareholders and society without increasing total value.<br><br>Responsible Business, by contrast, embeds social value creation into the firm's core strategy. By treating stakeholders well as part of its primary business activity, the firm generates more total value — it <em>grows the pie</em> — so both shareholders and stakeholders can be better off simultaneously.<br><br>Responsible Business retains an explicit duty to shareholders but argues that social value creation is the <em>mechanism</em> through which shareholder value is generated in the long run, rather than a diversion from it.</div>
+  </div>
+
+  <div class="exam-card">
+    <span class="exam-type sa">Short answer · 6 marks</span>
+    <div class="exam-q">A pharmaceutical company wishes to invest in free vaccines for low-income communities. Using the three principles of Responsible Business, assess whether this investment is likely to be justified.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Show model answer</button>
+    <div class="answer-box"><strong>Multiplication:</strong> The social benefit (reduced disease burden, improved public health outcomes) likely far exceeds the firm's private cost of producing the vaccines — the benefit multiplies beyond what the company spends. ✓<br><br><strong>Comparative Advantage:</strong> A pharmaceutical firm has unique R&amp;D expertise and production capacity in vaccine development. It can deliver this social benefit more effectively and efficiently than a government agency or NGO. ✓<br><br><strong>Materiality:</strong> For a pharmaceutical company, public health is directly material to its core business — reputational gains, regulatory goodwill, talent attraction, and future market development in emerging economies all convert the social value into long-run shareholder value. ✓<br><br>All three principles are satisfied. Responsible Business would support the investment.</div>
+  </div>
+
+  <div class="exam-card">
+    <span class="exam-type sa">Short answer · 2 marks</span>
+    <div class="exam-q">Name two parties who protect stakeholder welfare under shareholder capitalism, and briefly explain how each does so.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Show model answer</button>
+    <div class="answer-box"><strong>1. The elected government</strong> — enacts laws and taxes (e.g., minimum wage, environmental regulation) through democratic processes to ensure socially responsible corporate behaviour.<br><br><strong>2. Shareholders themselves</strong> — when profits and wealth are maximised, shareholders have maximum personal flexibility to allocate their wealth to the social causes they care about (charitable giving, ethical investment, etc.).</div>
+  </div>
+
+  <div class="exam-card">
+    <span class="exam-type cq">Conceptual · 3 marks</span>
+    <div class="exam-q">The stakeholder capitalism pie diagram shows three scenarios: (a) shareholders $60m / stakeholders $40m, (b) shareholders $50m / stakeholders $50m, (c) shareholders $70m / stakeholders $70m. Which scenario best illustrates the long-run case for stakeholder capitalism, and why?</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Show model answer</button>
+    <div class="answer-box">Scenario <strong>(c)</strong> best illustrates the long-run case. Starting from (a), the firm reduces shareholder returns to invest more in stakeholders — moving to (b), where the pie is split equally but the total is unchanged. However, in the long run, this investment grows the total pie: in (c) both shareholders and stakeholders receive $70m, more than either group received in (a).<br><br>This demonstrates that intrinsic investment in stakeholders — even when short-run NPV cannot be calculated — can create total value that benefits all parties. ESV would have rejected the move from (a) to (b) since shareholder value falls in the short term; stakeholder capitalism, by taking the long view, ultimately produces a better outcome for everyone.</div>
+  </div>
+</div>
+
+<script>
+  let qaRevealed = 0;
+  const totalQA = 10;
+
+  function switchTab(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function toggleQA(card) {
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    if (!wasOpen) {
+      qaRevealed = Math.min(qaRevealed + 1, totalQA);
+    } else {
+      qaRevealed = Math.max(qaRevealed - 1, 0);
+    }
+    updateQAProgress();
+  }
+
+  function updateQAProgress() {
+    document.getElementById('qa-progress-text').textContent = qaRevealed + ' / ' + totalQA + ' revealed';
+    document.getElementById('qa-bar').style.width = (qaRevealed / totalQA * 100) + '%';
+  }
+
+  function mcAnswer(li, correct, groupId) {
+    const group = document.getElementById(groupId);
+    const options = group.querySelectorAll('li');
+    options.forEach(o => {
+      o.classList.add('locked');
+      o.onclick = null;
+    });
+    li.classList.add(correct ? 'correct' : 'wrong');
+    if (!correct) {
+      options.forEach(o => {
+        if (o.textContent.trim().startsWith('B)') && groupId === 'mc1') o.classList.add('correct');
+        if (o.textContent.trim().startsWith('B)') && groupId === 'mc2') o.classList.add('correct');
+        if (o.textContent.trim().startsWith('C)') && groupId === 'mc3') o.classList.add('correct');
+      });
+    }
+  }
+
+  function revealAnswer(btn) {
+    const box = btn.nextElementSibling;
+    const isOpen = box.style.display === 'block';
+    box.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? 'Show model answer' : 'Hide answer';
+  }
+</script>
+</body>
+</html>
